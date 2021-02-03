@@ -1,75 +1,126 @@
 ''' Object Oriented Programming (Tutorial 7)
-    Whenever an object is created via. instantiation then, the constructor method of that class is executed. In our
-example, the class 'game1' is a predecessor of the other classes. Hence, whenever its sub classes do not contain a
-constructor method then, the constructor method of the super class is executed. But, if the sub class has a constructor
-method then, the sub class's constructor gets executed rather than the super class's constructor. In case if the
-programmer wants the program to execute the constructors of both the super and sub class whenever the instance of sub
-class is being created. For this the super function is used.
-    If a class has multiple inheritance then, whenever the instance of the class is being created the class written to
-the leftmost has its constructor executed. The associativity in this case is from left to right.
+    Polymorphism is defined as the ability of an interfaces or entities to take many forms.
+    In object oriented programming there are 4 ways of polymorphism can take place:-
+        1. Duck Typing :- Duck typing basically builds on the idea that if a bird walks like a duck, quacks like a duck
+    swims like a duck then it is definitely a duck. Similarly, in duck typing if a class contains a specific method
+    then, it doesn't matter which class the object belongs to. For e.g, in our program both 'Pycharm' and "myEditor'
+    contain a method execute. Hence, it doesn't matter which of the two class object is passed to laptop as they both
+    contain an execute method.
+        2. Operator Overloading :- There are many builtin operators in python. These operators are used to implement
+    various operations like addition, subtraction, multiplication and division. However, these operators cannot add or
+    subtract two class objects or add an 'int' class variable with a 'string'. If in case a programmer wants to
+    implement in any program then, python allows for operator overloading i.e the programmer can redefine an existing
+    operator with the same name.
+        3. Method Overloading :- Method overloading basically allows the programmer to define one method more than once
+    inside the same class by either changing the number of arguments or the types of arguments. This concept is present
+    in other object oriented programming languages like C++, Java, etc. Unfortunately, method overloading in not
+    available in Python.
+        4. Method Overriding :- Method overriding allows a sub class to inherit all the methods mentioned in its super
+    class. Hence, the object of sub class can access all the methods present in its super class. Also, a sub class can
+    redefine a method already present in its super class.
 '''
 
 
-class game1:
+# example of Duck typing
+class Pycharm:
 
-    def __init__(self):
-        print("You're in A.")
-
-    def feature1(self):
-        print("Feature 1 working...")
-
-    def feature2(self):
-        print("Feature 2 working...")
+    def execute(self):
+        print("Run time error")
+        print("Compiler error\n")
 
 
-class game2(game1):
+class myEditor:
 
-    def __init__(self):
-        print("You're in B.")
-        super().__init__()
-
-    def feature3(self):
-        print("feature 3 working...")
-
-    def feature4(self):
-        print("Feature 4 working...")
+    def execute(self):
+        print("Spell check")
+        print("Convention check")
+        print("Run time error")
+        print("Compiler error")
 
 
-class game3(game1):
+class Laptop:
 
-    def feature5(self):
-        print("Feature 5 working...")
-
-    def feature6(self):
-        print("Feature 6 working...")
+    def processor(self, ide):
+        ide.execute()
 
 
-class game4():
+obj1 = Pycharm()
+obj2 = myEditor()
 
-    def __init__(self):
-        print("You're in D.")
-
-    def feature7(self):
-        print("Feature 5 working...")
-
-    def feature8(self):
-        print("Feature 6 working...")
+lap = Laptop()
+lap.processor(obj1)
+lap.processor(obj2)
 
 
-class game5(game4, game1):
+# example of operator overloading
+class Student:
 
-    def __init__(self):
-        super(game5, self).__init__()
-        print("You're in E.")
+    def __init__(self, m1, m2):
+        self.m1 = m1
+        self.m2 = m2
 
-    def feature9(self):
-        print("Feature 9 working...")
+    def __add__(self, other):
+        m1 = self.m1 + other.m1
+        m2 = self.m2 + other.m2
+        stud = Student(m1, m2)
+        return stud
 
-    def feature10(self):
-        print("Feature 10 working...")
+    def __gt__(self, other):
+        score1 = self.m1 + self.m2
+        score2 = other.m1 + other.m2
+        if score1 > score2:
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return '{} {}'.format(self.m1, self.m2)
 
 
-g1 = game1()
-g2 = game2()
-g3 = game3()
-g5 = game5()
+s1 = Student(57, 63)
+s2 = Student(53, 72)
+s3 = Student(43, 67)
+print(s1)
+print(s2)
+print(s3)
+s4 = s1 + s2
+print(s4.m1)
+print(s4.m2)
+print(s4)
+
+if s1 > s2:
+    print("Student1 wins!!!")
+else:
+    print("Student2 wins!!!")
+
+if s1 > s3:
+    print("Student1 wins")
+else:
+    print("Student3 wins")
+
+
+# example for Method overriding
+class Parent:
+
+    def phone(self):
+        company = 'Nokia'
+        print(company)
+
+
+class ChildA(Parent):
+
+    def phone(self):
+        company = 'Oppo'
+        print(company)
+
+
+class ChildB(Parent):
+    pass
+
+
+daughter = ChildA()
+son = ChildB()
+# although both son and daughter are accessing the same method the o/p will be different as son is object of class
+# ChildB  whilst the daughter is class ChildA
+son.phone()
+daughter.phone()
